@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.finance.p2p.dao.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.finance.p2p.entity.User" >
+    <id column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="user_role" property="userRole" jdbcType="INTEGER" />
+    <result column="user_level" property="userLevel" jdbcType="INTEGER" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="nickname" property="nickname" jdbcType="VARCHAR" />
+    <result column="realname" property="realname" jdbcType="VARCHAR" />
+    <result column="sex" property="sex" jdbcType="INTEGER" />
+    <result column="birthday" property="birthday" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="udid" property="udid" jdbcType="VARCHAR" />
+    <result column="pay_password" property="payPassword" jdbcType="VARCHAR" />
+    <result column="meg_switch" property="megSwitch" jdbcType="INTEGER" />
+    <result column="invite_phone" property="invitePhone" jdbcType="VARCHAR" />
+    <result column="relation" property="relation" jdbcType="VARCHAR" />
+    <result column="activation" property="activation" jdbcType="INTEGER" />
+    <result column="activation_code" property="activationCode" jdbcType="VARCHAR" />
+    <result column="pay_time" property="payTime" jdbcType="TIMESTAMP" />
+    <result column="lock_time" property="lockTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    user_id, user_role, user_level, password, phone, nickname, realname, sex, birthday, 
+    state, udid, pay_password, meg_switch, invite_phone, relation, activation, activation_code, 
+    pay_time, lock_time, create_time, modify_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from p2p_user
+    where user_id = #{userId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from p2p_user
+    where user_id = #{userId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.finance.p2p.entity.User" >
+    insert into p2p_user (user_id, user_role, user_level, 
+      password, phone, nickname, 
+      realname, sex, birthday, 
+      state, udid, pay_password, 
+      meg_switch, invite_phone, relation, 
+      activation, activation_code, pay_time, 
+      lock_time, create_time, modify_time
+      )
+    values (#{userId,jdbcType=BIGINT}, #{userRole,jdbcType=INTEGER}, #{userLevel,jdbcType=INTEGER}, 
+      #{password,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{nickname,jdbcType=VARCHAR}, 
+      #{realname,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER}, #{birthday,jdbcType=VARCHAR}, 
+      #{state,jdbcType=INTEGER}, #{udid,jdbcType=VARCHAR}, #{payPassword,jdbcType=VARCHAR}, 
+      #{megSwitch,jdbcType=INTEGER}, #{invitePhone,jdbcType=VARCHAR}, #{relation,jdbcType=VARCHAR}, 
+      #{activation,jdbcType=INTEGER}, #{activationCode,jdbcType=VARCHAR}, #{payTime,jdbcType=TIMESTAMP}, 
+      #{lockTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.finance.p2p.entity.User" >
+    insert into p2p_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="userRole != null" >
+        user_role,
+      </if>
+      <if test="userLevel != null" >
+        user_level,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="phone != null" >
+        phone,
+      </if>
+      <if test="nickname != null" >
+        nickname,
+      </if>
+      <if test="realname != null" >
+        realname,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="birthday != null" >
+        birthday,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="udid != null" >
+        udid,
+      </if>
+      <if test="payPassword != null" >
+        pay_password,
+      </if>
+      <if test="megSwitch != null" >
+        meg_switch,
+      </if>
+      <if test="invitePhone != null" >
+        invite_phone,
+      </if>
+      <if test="relation != null" >
+        relation,
+      </if>
+      <if test="activation != null" >
+        activation,
+      </if>
+      <if test="activationCode != null" >
+        activation_code,
+      </if>
+      <if test="payTime != null" >
+        pay_time,
+      </if>
+      <if test="lockTime != null" >
+        lock_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="userRole != null" >
+        #{userRole,jdbcType=INTEGER},
+      </if>
+      <if test="userLevel != null" >
+        #{userLevel,jdbcType=INTEGER},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null" >
+        #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="realname != null" >
+        #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="birthday != null" >
+        #{birthday,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="udid != null" >
+        #{udid,jdbcType=VARCHAR},
+      </if>
+      <if test="payPassword != null" >
+        #{payPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="megSwitch != null" >
+        #{megSwitch,jdbcType=INTEGER},
+      </if>
+      <if test="invitePhone != null" >
+        #{invitePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="relation != null" >
+        #{relation,jdbcType=VARCHAR},
+      </if>
+      <if test="activation != null" >
+        #{activation,jdbcType=INTEGER},
+      </if>
+      <if test="activationCode != null" >
+        #{activationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="payTime != null" >
+        #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lockTime != null" >
+        #{lockTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.finance.p2p.entity.User" >
+    update p2p_user
+    <set >
+      <if test="userRole != null" >
+        user_role = #{userRole,jdbcType=INTEGER},
+      </if>
+      <if test="userLevel != null" >
+        user_level = #{userLevel,jdbcType=INTEGER},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null" >
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="nickname != null" >
+        nickname = #{nickname,jdbcType=VARCHAR},
+      </if>
+      <if test="realname != null" >
+        realname = #{realname,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=INTEGER},
+      </if>
+      <if test="birthday != null" >
+        birthday = #{birthday,jdbcType=VARCHAR},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="udid != null" >
+        udid = #{udid,jdbcType=VARCHAR},
+      </if>
+      <if test="payPassword != null" >
+        pay_password = #{payPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="megSwitch != null" >
+        meg_switch = #{megSwitch,jdbcType=INTEGER},
+      </if>
+      <if test="invitePhone != null" >
+        invite_phone = #{invitePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="relation != null" >
+        relation = #{relation,jdbcType=VARCHAR},
+      </if>
+      <if test="activation != null" >
+        activation = #{activation,jdbcType=INTEGER},
+      </if>
+      <if test="activationCode != null" >
+        activation_code = #{activationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="payTime != null" >
+        pay_time = #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lockTime != null" >
+        lock_time = #{lockTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.finance.p2p.entity.User" >
+    update p2p_user
+    set user_role = #{userRole,jdbcType=INTEGER},
+      user_level = #{userLevel,jdbcType=INTEGER},
+      password = #{password,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      nickname = #{nickname,jdbcType=VARCHAR},
+      realname = #{realname,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=INTEGER},
+      birthday = #{birthday,jdbcType=VARCHAR},
+      state = #{state,jdbcType=INTEGER},
+      udid = #{udid,jdbcType=VARCHAR},
+      pay_password = #{payPassword,jdbcType=VARCHAR},
+      meg_switch = #{megSwitch,jdbcType=INTEGER},
+      invite_phone = #{invitePhone,jdbcType=VARCHAR},
+      relation = #{relation,jdbcType=VARCHAR},
+      activation = #{activation,jdbcType=INTEGER},
+      activation_code = #{activationCode,jdbcType=VARCHAR},
+      pay_time = #{payTime,jdbcType=TIMESTAMP},
+      lock_time = #{lockTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP}
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+  
+  <select id="selectByPhone" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from p2p_user
+    where phone = #{phone,jdbcType=VARCHAR}
+  </select>    
+
+  <select id="getUserTeamInfo" resultType="com.finance.p2p.biz.user.bean.Team$Person" parameterType="java.lang.String">
+    select user_id userId, realname realName, phone, state, activation
+    from p2p_user
+    where invite_phone = #{phone,jdbcType=VARCHAR}
+    order by user_id desc
+  </select> 
+
+  <select id="getSuperiorInfo" resultType="com.finance.p2p.biz.user.bean.Team$Person" parameterType="java.lang.String">
+    select user_id userId, realname realName, phone, state, activation
+    from p2p_user
+    where phone = #{phone,jdbcType=VARCHAR}
+  </select>
+  
+  <!-- 我们根据pay_time来进行校验 , 那么必须满足 buy里面没有数据,由于有设置，所以我们这里就不判断了 
+     	update p2p_user set state = 1, 
+   	    lock_time = #{nowDate},
+   	    modify_time = #{nowDate}
+   	    where state = 0 and timestampdiff(HOUR, pay_time, #{nowDate}) >= #{hour}	
+  -->
+  <update id="updateUserStateBy48Hour">
+   	update p2p_user set state = 1, lock_time = #{nowDate}, modify_time = #{nowDate}
+   	    where state = 0 and pay_time <![CDATA[ < ]]> #{nowDate}	
+  </update>
+  
+  <select id="selectLockUserList" resultType="java.lang.Long" >
+    select user_id from p2p_user
+    where state = 1 and lock_time = #{nowDate,jdbcType=TIMESTAMP}
+  </select>
+  
+  <update id="userSellStateTask">
+   update p2p_user a set 
+   	pay_time = DATE_ADD((select d.modify_time from p2p_sell d where d.user_id = a.user_id and d.state = 5 order by id desc LIMIT 1),INTERVAL 48 HOUR),
+   	modify_time = #{nowDate}, lock_time = #{nowDate}
+   	where  not EXISTS (select 1 from p2p_income_buy b where b.user_id = a.user_id)
+    and EXISTS (select 1 from p2p_sell c where c.user_id = a.user_id)
+	and lock_time is null
+  </update>
+  
+  <!-- 查找所有被锁定的人员 -->
+  <select id="getLockUserList" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from p2p_user
+		<where>
+		    state = 1
+			<if test="phone != null and phone != ''">
+				and phone <![CDATA[ = ]]> #{phone}
+			</if>
+			<if test="realname != null and realname != ''">
+				and realname <![CDATA[ = ]]> #{realname}
+			</if>
+		</where>
+		order by lock_time desc
+		<if test="limit != null">
+			limit #{limit}
+		</if>
+	</select>
+
+  <!-- 统计直接推荐人员数量，方便提升用户等级 -->
+  <select id="selectDirectNum" resultType="java.lang.Integer" >
+    select count(1) from p2p_user
+    where invite_phone = #{phone,jdbcType=VARCHAR} and state = 0
+  </select>
+  
+  <!-- 查找整个团队人员数量 -->
+  <select id="selectSubordinateNum" resultType="java.lang.Integer" >
+    select count(1) from p2p_user
+    where instr(relation, #{userId}) <![CDATA[ > ]]> 0
+    <if test="state != null">
+		and state <![CDATA[ = ]]> #{state}
+	</if>
+  </select>
+  
+ <!-- 查找所有被锁定的人员 -->
+  <select id="getAllUserList" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from p2p_user
+		where  state = 0 and user_id <![CDATA[ > ]]> #{userId}
+		order by user_id asc
+		limit 50
+	</select>
+</mapper>

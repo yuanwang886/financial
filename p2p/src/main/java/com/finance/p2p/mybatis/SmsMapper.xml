@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.finance.p2p.dao.SmsMapper" >
+  <resultMap id="BaseResultMap" type="com.finance.p2p.entity.Sms" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="business_type" property="businessType" jdbcType="INTEGER" />
+    <result column="report_status" property="reportStatus" jdbcType="INTEGER" />
+    <result column="error_code" property="errorCode" jdbcType="VARCHAR" />
+    <result column="rep_result" property="repResult" jdbcType="VARCHAR" />
+    <result column="rep_error" property="repError" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, mobile, content, business_type, report_status, error_code, rep_result, rep_error, 
+    create_time, modify_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from p2p_sms
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from p2p_sms
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.finance.p2p.entity.Sms" >
+    insert into p2p_sms (id, mobile, content, 
+      business_type, report_status, error_code, 
+      rep_result, rep_error, create_time, 
+      modify_time)
+    values (#{id,jdbcType=BIGINT}, #{mobile,jdbcType=VARCHAR}, #{content,jdbcType=VARCHAR}, 
+      #{businessType,jdbcType=INTEGER}, #{reportStatus,jdbcType=INTEGER}, #{errorCode,jdbcType=VARCHAR}, 
+      #{repResult,jdbcType=VARCHAR}, #{repError,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{modifyTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.finance.p2p.entity.Sms" >
+    insert into p2p_sms
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="mobile != null" >
+        mobile,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="businessType != null" >
+        business_type,
+      </if>
+      <if test="reportStatus != null" >
+        report_status,
+      </if>
+      <if test="errorCode != null" >
+        error_code,
+      </if>
+      <if test="repResult != null" >
+        rep_result,
+      </if>
+      <if test="repError != null" >
+        rep_error,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="mobile != null" >
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="businessType != null" >
+        #{businessType,jdbcType=INTEGER},
+      </if>
+      <if test="reportStatus != null" >
+        #{reportStatus,jdbcType=INTEGER},
+      </if>
+      <if test="errorCode != null" >
+        #{errorCode,jdbcType=VARCHAR},
+      </if>
+      <if test="repResult != null" >
+        #{repResult,jdbcType=VARCHAR},
+      </if>
+      <if test="repError != null" >
+        #{repError,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.finance.p2p.entity.Sms" >
+    update p2p_sms
+    <set >
+      <if test="mobile != null" >
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="content != null" >
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="businessType != null" >
+        business_type = #{businessType,jdbcType=INTEGER},
+      </if>
+      <if test="reportStatus != null" >
+        report_status = #{reportStatus,jdbcType=INTEGER},
+      </if>
+      <if test="errorCode != null" >
+        error_code = #{errorCode,jdbcType=VARCHAR},
+      </if>
+      <if test="repResult != null" >
+        rep_result = #{repResult,jdbcType=VARCHAR},
+      </if>
+      <if test="repError != null" >
+        rep_error = #{repError,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.finance.p2p.entity.Sms" >
+    update p2p_sms
+    set mobile = #{mobile,jdbcType=VARCHAR},
+      content = #{content,jdbcType=VARCHAR},
+      business_type = #{businessType,jdbcType=INTEGER},
+      report_status = #{reportStatus,jdbcType=INTEGER},
+      error_code = #{errorCode,jdbcType=VARCHAR},
+      rep_result = #{repResult,jdbcType=VARCHAR},
+      rep_error = #{repError,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

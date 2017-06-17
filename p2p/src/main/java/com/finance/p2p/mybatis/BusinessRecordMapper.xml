@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.finance.p2p.dao.BusinessRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.finance.p2p.entity.BusinessRecord" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="buy_id" property="buyId" jdbcType="BIGINT" />
+    <result column="sell_id" property="sellId" jdbcType="BIGINT" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="buy_account_id" property="buyAccountId" jdbcType="BIGINT" />
+    <result column="sell_account_id" property="sellAccountId" jdbcType="BIGINT" />
+    <result column="money" property="money" jdbcType="DECIMAL" />
+    <result column="state" property="state" jdbcType="INTEGER" />
+    <result column="pic_url" property="picUrl" jdbcType="VARCHAR" />
+    <result column="lock_time" property="lockTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, buy_id, sell_id, type, buy_account_id, sell_account_id, money, state, pic_url, 
+    lock_time, create_time, modify_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from p2p_business_record
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from p2p_business_record
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.finance.p2p.entity.BusinessRecord" >
+    insert into p2p_business_record (id, buy_id, sell_id, 
+      type, buy_account_id, sell_account_id, 
+      money, state, pic_url, 
+      lock_time, create_time, modify_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{buyId,jdbcType=BIGINT}, #{sellId,jdbcType=BIGINT}, 
+      #{type,jdbcType=INTEGER}, #{buyAccountId,jdbcType=BIGINT}, #{sellAccountId,jdbcType=BIGINT}, 
+      #{money,jdbcType=DECIMAL}, #{state,jdbcType=INTEGER}, #{picUrl,jdbcType=VARCHAR}, 
+      #{lockTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.finance.p2p.entity.BusinessRecord" >
+    insert into p2p_business_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="buyId != null" >
+        buy_id,
+      </if>
+      <if test="sellId != null" >
+        sell_id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="buyAccountId != null" >
+        buy_account_id,
+      </if>
+      <if test="sellAccountId != null" >
+        sell_account_id,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="state != null" >
+        state,
+      </if>
+      <if test="picUrl != null" >
+        pic_url,
+      </if>
+      <if test="lockTime != null" >
+        lock_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="buyId != null" >
+        #{buyId,jdbcType=BIGINT},
+      </if>
+      <if test="sellId != null" >
+        #{sellId,jdbcType=BIGINT},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="buyAccountId != null" >
+        #{buyAccountId,jdbcType=BIGINT},
+      </if>
+      <if test="sellAccountId != null" >
+        #{sellAccountId,jdbcType=BIGINT},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="state != null" >
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="picUrl != null" >
+        #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="lockTime != null" >
+        #{lockTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.finance.p2p.entity.BusinessRecord" >
+    update p2p_business_record
+    <set >
+      <if test="buyId != null" >
+        buy_id = #{buyId,jdbcType=BIGINT},
+      </if>
+      <if test="sellId != null" >
+        sell_id = #{sellId,jdbcType=BIGINT},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="buyAccountId != null" >
+        buy_account_id = #{buyAccountId,jdbcType=BIGINT},
+      </if>
+      <if test="sellAccountId != null" >
+        sell_account_id = #{sellAccountId,jdbcType=BIGINT},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="state != null" >
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="picUrl != null" >
+        pic_url = #{picUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="lockTime != null" >
+        lock_time = #{lockTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.finance.p2p.entity.BusinessRecord" >
+    update p2p_business_record
+    set buy_id = #{buyId,jdbcType=BIGINT},
+      sell_id = #{sellId,jdbcType=BIGINT},
+      type = #{type,jdbcType=INTEGER},
+      buy_account_id = #{buyAccountId,jdbcType=BIGINT},
+      sell_account_id = #{sellAccountId,jdbcType=BIGINT},
+      money = #{money,jdbcType=DECIMAL},
+      state = #{state,jdbcType=INTEGER},
+      pic_url = #{picUrl,jdbcType=VARCHAR},
+      lock_time = #{lockTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <!-- timestampdiff(HOUR, lock_time, #{nowDate}) >= #{hour} -->
+  <select id="selectLockRecord" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from p2p_business_record
+    where type = #{type} and state = #{state} and lock_time <![CDATA[ <= ]]> #{nowDate}
+    limit 100
+  </select>
+  
+  
+  <select id="selectConfirmRecord" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from p2p_business_record
+    where state = #{state} and lock_time <![CDATA[ <= ]]> #{nowDate}
+    limit 100
+  </select>
+  
+  <select id="getBuyList" resultMap="BaseResultMap"  parameterType="java.util.Map">
+    select 
+    <include refid="Base_Column_List" />
+    from p2p_business_record
+    where buy_account_id = #{userId}
+    <if test="id != null and id != ''">
+		and id <![CDATA[ < ]]> #{id}
+	</if>
+		order by id desc
+	<if test="limit != null">
+			limit #{limit}
+	</if>
+  </select>
+  
+  <select id="getSellList" resultMap="BaseResultMap"  parameterType="java.util.Map">
+    select 
+    <include refid="Base_Column_List" />
+    from p2p_business_record
+    where sell_account_id = #{userId}
+    <if test="id != null and id != ''">
+		and id <![CDATA[ < ]]> #{id}
+	</if>
+		order by id desc
+	<if test="limit != null">
+			limit #{limit}
+	</if>
+  </select>
+  
+  <select id="getMatchList" resultType="com.finance.p2p.biz.user.bean.Match"  parameterType="java.util.Map">
+    select a.id id,  b.realname realname, b.phone phone,  a.money money,  a.state state, a.create_time createTime
+    from p2p_business_record a left join p2p_user b on a.buy_account_id = b.user_id
+    where 1 = 1
+    <if test="id != null and id != ''">
+		and a.id <![CDATA[ < ]]> #{id}
+	</if>
+	<if test="type == 1">
+		and b.invite_phone = #{phone}
+	</if>
+	<if test="type == 2">
+		and instr(b.relation, #{userId}) <![CDATA[ > ]]> 0 and b.invite_phone <![CDATA[ <> ]]> #{phone}
+		and b.user_id  <![CDATA[ <> ]]> #{userId}
+	</if>
+		order by id desc
+	<if test="limit != null">
+			limit #{limit}
+	</if>
+  </select>
+</mapper>

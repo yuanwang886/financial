@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.finance.p2p.dao.UserTimeMapper" >
+  <resultMap id="BaseResultMap" type="com.finance.p2p.entity.UserTime" >
+    <id column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="s_notice_time" property="sNoticeTime" jdbcType="TIMESTAMP" />
+    <result column="p_notice_time" property="pNoticeTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    user_id, s_notice_time, p_notice_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from p2p_user_time
+    where user_id = #{userId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from p2p_user_time
+    where user_id = #{userId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.finance.p2p.entity.UserTime" >
+    insert into p2p_user_time (user_id, s_notice_time, p_notice_time
+      )
+    values (#{userId,jdbcType=BIGINT}, #{sNoticeTime,jdbcType=TIMESTAMP}, #{pNoticeTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.finance.p2p.entity.UserTime" >
+    insert into p2p_user_time
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="sNoticeTime != null" >
+        s_notice_time,
+      </if>
+      <if test="pNoticeTime != null" >
+        p_notice_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="sNoticeTime != null" >
+        #{sNoticeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pNoticeTime != null" >
+        #{pNoticeTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.finance.p2p.entity.UserTime" >
+    update p2p_user_time
+    <set >
+      <if test="sNoticeTime != null" >
+        s_notice_time = #{sNoticeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pNoticeTime != null" >
+        p_notice_time = #{pNoticeTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.finance.p2p.entity.UserTime" >
+    update p2p_user_time
+    set s_notice_time = #{sNoticeTime,jdbcType=TIMESTAMP},
+      p_notice_time = #{pNoticeTime,jdbcType=TIMESTAMP}
+    where user_id = #{userId,jdbcType=BIGINT}
+  </update>
+</mapper>
