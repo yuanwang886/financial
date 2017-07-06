@@ -159,14 +159,15 @@ CREATE TABLE `p2p_release` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='激活码个数表';
 
 -- ----------------------------
---  Table structure for `p2p_release_code`
+--  Table structure for `p2p_release_history`
 -- ----------------------------
-DROP TABLE IF EXISTS `p2p_release_code`;
-CREATE TABLE `p2p_release_code` (
+DROP TABLE IF EXISTS `p2p_release_history`;
+CREATE TABLE `p2p_release_history` (
   `id` bigint(20) NOT NULL,
   `user_id` bigint(20) NOT NULL,
-  `code` varchar(6) NOT NULL COMMENT 'code',
-  `state` int(2) NOT NULL DEFAULT '0' COMMENT '0未使用   1已使用',
+  `user_id_op` bigint(20) NOT NULL,
+  `type` int(2) NOT NULL DEFAULT '1' COMMENT '1 激活  2 出售',
+  `num` int(6) NOT NULL DEFAULT '0' COMMENT '0未使用   1已使用',
   `create_time` datetime NOT NULL,
   `modify_time` datetime NOT NULL,
   PRIMARY KEY (`id`)
