@@ -70,5 +70,5 @@ public interface IncomeBuyMapper {
 	 * @param userId
 	 * @return
 	 */
-	int deleteUserAllList(@Param("userId") Long userId);
+	//int deleteUserAllList(@Param("userId") Long userId);
 }

@@ -1,7 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <div class="modal-header">
-	<button type="button" class="close" data-dismiss="modal"
-		aria-hidden="true">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
 		<span class="fa fa-remove"></span>
 	</button>
 	<h4 class="modal-title">编辑支付密码</h4>
@@ -14,20 +13,19 @@
 					<div class="form-group">
 						<label for="money">验证码:</label>
 						<div class="input-group">
-							<input type="text" class="form-control" id="code" name="code"
-								placeholder="请输入6位短信验证码"> <span class="input-group-btn">
-								<input type="button" id="codeBtn" name="codeBtn"
-								class="btn btn-warning btn-flat" value="点击获取验证码">
+							<input type="text" class="form-control" id="code" name="code" placeholder="请输入6位短信验证码"> 
+							<span class="input-group-btn">
+								<input type="button" id="codeBtn" name="codeBtn" class="btn btn-warning btn-flat" value="点击获取验证码">
 							</span>
 						</div>
 					</div>
 					<div class="form-group">
-						<label for="money">支付密码:</label> <input type="password"
-							class="form-control" id="password" name="password" placeholder="请输入支付密码">
+						<label for="money">支付密码:</label> 
+						<input type="password" class="form-control" id="password" name="password" placeholder="请输入支付密码">
 					</div>
 					<div class="form-group">
-						<label for="money">确认支付密码:</label> <input type="password"
-							class="form-control" id="password2" name="password2" placeholder="请确认支付密码">
+						<label for="money">确认支付密码:</label> 
+						<input type="password" class="form-control" id="password2" name="password2" placeholder="请确认支付密码">
 					</div>
 				</div>
 			</div>

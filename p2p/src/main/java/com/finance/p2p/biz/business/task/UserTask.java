@@ -29,7 +29,7 @@ public class UserTask extends LogUtil {
 	/**
 	 * 用户锁定批处理
 	 */
-	@Scheduled(cron = "0 3/10 8-20 * * ?")
+	@Scheduled(cron = "0 3/10 5-23 * * ?")
 	public void userStateLockTask() {
 		if (jobSwitch.equals("0")) {
 			return;
@@ -41,7 +41,7 @@ public class UserTask extends LogUtil {
 	/**
 	 * 自动确认用户打款24小时内
 	 */
-	@Scheduled(cron = "0 5/5 1-6 * * ?")
+	@Scheduled(cron = "0 5/5 1-5 * * ?")
 	public void confirmPayTask() {
 		if (jobSwitch.equals("0")) {
 			return;

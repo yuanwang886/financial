@@ -28,12 +28,14 @@
 		<div class="col-xs-12">
 			<div id="u-notice-list">
 				<ul class="list-group">
-					<li class="list-group-item"><div class="input-group">
-							<a>支付密码</a> <span class="input-group-btn">
-								<button type="button" id="payBtn" class="btn btn-primary"
-									data-target="#myModel" data-toggle="modal">编辑</button>
+					<li class="list-group-item">
+						<div class="input-group">
+							<a>支付密码</a> 
+							<span class="input-group-btn">
+								<button type="button" id="payBtn" class="btn btn-primary" data-target="#myModel" data-toggle="modal">编辑</button>
 							</span>
-						</div></li>
+						</div>
+					</li>
 					<li class="list-group-item">支付密码：<c:if
 							test="${not empty user.payPassword}">******</c:if></li>
 				</ul>

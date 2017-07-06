@@ -29,6 +29,10 @@
 						激活用户数量：<font color="red">${team.usedNum}</font>&nbsp;&nbsp;&nbsp;&nbsp;
 						已经出售数量：<font color="red">${team.sellNum}</font>&nbsp;&nbsp;&nbsp;&nbsp;
 						当前剩余数量：<font color="red">${team.lastNum}</font>&nbsp;&nbsp;&nbsp;&nbsp;
+						
+						<c:if test="${team.sellNum gt 0}">
+							<span><button type="button" onclick="releaseHistory()" class="btn btn-success">激活码消费记录</button></span>
+						</c:if>
 					</li>
 				</ul>
 			</div>
@@ -251,7 +255,7 @@
 			return;
 		}
 		// 如果到这里了说明已经可以了，那么我们就开始弹出密码需要输入比较
-		$("#userMId").val(userId);
+		$("#userId").val(userId);
 		$("#myModal").modal('show');
 	}
 	
@@ -272,7 +276,6 @@
 							btnClass : 'btn-blue',
 							action : function() {
 								$("#userId").val('');
-								$("#userMId").val('');
 								$("#num").val('');
 								loadPage(ctx + "/user/team/index");
 							}
@@ -296,5 +299,12 @@
 				});
 			}
 		})
+	}
+	
+	/**
+	历史激活码记录
+	*/
+	function releaseHistory() {
+		loadPage(ctx + "/user/team/history/index");
 	}
 </script>

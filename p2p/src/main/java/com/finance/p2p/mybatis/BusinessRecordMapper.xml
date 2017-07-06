@@ -240,4 +240,18 @@
 			limit #{limit}
 	</if>
   </select>
+  
+  
+  <!-- 锁定用户前吧用户对应的数据查询出来，钱需要返回到用户钱包 -->
+  <select id="getUserRecordList" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from p2p_business_record
+    where buy_account_id = #{userId} and state <![CDATA[ < ]]> 2
+  </select>
+  
+  <delete id="deleteUserRecordWhenLock" >
+    delete from p2p_business_record
+    where  (buy_account_id = #{userId} or sell_account_id = #{userId}) and state <![CDATA[ < ]]> 2
+  </delete>
 </mapper>

@@ -23,7 +23,7 @@ public interface SellMapper {
 	/**
 	 * 找出需要提现的用户信息
 	 */
-	List<Sell> selectSellTop( @Param("id") Long id, @Param("userId") Long userId);
+	List<Sell> selectSellTop(@Param("id") Long id, @Param("userId") Long userId);
 
 	int countSellByCondtion(@Param("userId") Long userId, @Param("nowDate") Date nowDate);
 
@@ -34,7 +34,7 @@ public interface SellMapper {
 	 * @return
 	 */
 	Sell queryUserLastSell(Long userId);
-	
+
 	/**
 	 * 计算用户是否还存在计算利息的数据
 	 * 
@@ -42,4 +42,20 @@ public interface SellMapper {
 	 * @return
 	 */
 	Integer countUserUnComplate(@Param("userId") Long userId, @Param("state") Integer state);
+
+	/**
+	 * 当锁定一个用户处理的购买数据
+	 * 
+	 * @return
+	 */
+	int updateUserSellWhenLock(@Param("userId") Long userId, @Param("nowDate") Date nowDate);
+
+	/**
+	 * 当解锁一个用户处理的购买数据
+	 * 
+	 * @param userId
+	 * @param nowDate
+	 * @return
+	 */
+	int updateUserSellWhenUnLock(@Param("userId") Long userId, @Param("nowDate") Date nowDate);
 }

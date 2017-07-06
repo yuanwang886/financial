@@ -13,6 +13,7 @@ import com.finance.p2p.biz.sys.utils.Const.StateKey;
 import com.finance.p2p.biz.sys.utils.Const.TimeKey;
 import com.finance.p2p.biz.sys.utils.Const.USERKey;
 import com.finance.p2p.dao.BuyMapper;
+import com.finance.p2p.dao.SellMapper;
 import com.finance.p2p.dao.UserMapper;
 import com.finance.p2p.entity.Buy;
 import com.finance.p2p.entity.User;
@@ -28,8 +29,10 @@ public class LockService {
 	@Autowired
 	private BuyMapper buyMapper;
 
+	@Autowired
+	private SellMapper sellMapper;
 	/**
-	 * 管理员根据条件查询公告列表
+	 * 管理员根据条件人员列表
 	 * 
 	 * @return
 	 */
@@ -56,14 +59,15 @@ public class LockService {
 			user.setPayTime(DateUtil.dateAddDay(date, TimeKey.DAY_2));
 		} else if (buy.getState().equals(StateKey.STATE_9)) {
 			user.setPayTime(DateUtil.dateAddYear(date, TimeKey.USER_PAYTIME));
-
-			buy.setState(StateKey.STATE_0);
-			buy.setModifyTime(date);
 			buyMapper.updateByPrimaryKeySelective(buy);
 		}
 		userMapper.updateByPrimaryKey(user);
+		
+		//更新用户的卖出记录
+		buyMapper.updateUserBuyWhenUnLock(userId, date);
+		sellMapper.updateUserSellWhenUnLock(userId, date);
+		//更新用户钱包
 
-		//至于用户解冻之后，是否可以吧原来的金额体现，这个还不知道
 		return new BaseData();
 	}
 }

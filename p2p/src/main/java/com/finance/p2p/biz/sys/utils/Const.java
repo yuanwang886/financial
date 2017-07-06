@@ -147,11 +147,18 @@ public class Const {
 
 		Integer HOUR_24 = 24;
 
+		Integer HOUR_36 = 36;
+		
+		Integer HOUR_0 = 0;
+
 		/** 可以卖出的天数 */
-		Integer DAY_10 = 1;
+		Integer DAY_12 = 12;
 
 		/** 从目前2天没有处理的直接锁定 */
 		Integer DAY_2 = 2;
+
+		/** 余款6天后匹配 */
+		Integer DAY_6 = 6;
 	}
 
 	public interface RateKey {
@@ -167,8 +174,7 @@ public class Const {
 
 		/** 30天后部计算利息 */
 		Integer DAY_MAX = 30;
-		
-		
+
 		/** 奖金值 */
 		BigDecimal RATE1 = new BigDecimal(0.05);
 		BigDecimal RATE2 = new BigDecimal(0.03);
@@ -203,7 +209,7 @@ public class Const {
 	}
 
 	/**
-	 * 1 买入 2 卖出 3 利息 4 下级奖金  5 二级奖金
+	 * 1 买入 2 卖出 3 利息 4 下级奖金 5 二级奖金 6 内置金额
 	 * 
 	 * @author Administrator 用户钱包轨迹
 	 *
@@ -215,9 +221,23 @@ public class Const {
 		Integer TYPE_2 = 2;
 
 		Integer TYPE_3 = 3;
-		
+
 		Integer TYPE_4 = 4;
-		
+
 		Integer TYPE_5 = 5;
+		
+		Integer TYPE_6 = 6;
+	}
+
+	/**
+	 * 激活码历史记录 1:激活 2 出售
+	 * 
+	 * @author Administrator
+	 *
+	 */
+	public interface ReleaseKey {
+		Integer TYPE_1 = 1;
+
+		Integer TYPE_2 = 2;
 	}
 }

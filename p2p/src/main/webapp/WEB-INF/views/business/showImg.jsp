@@ -1,8 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 
 <div class="modal-header">
-	<button type="button" class="close" data-dismiss="modal"
-		aria-hidden="true">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
 		<span class="fa fa-remove"></span>
 	</button>
 	<h4 class="modal-title">支付凭证</h4>

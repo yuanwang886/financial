@@ -49,6 +49,10 @@ public class UploadController {
 	@ResponseBody
 	public BaseData upload(MultipartFile file, HttpSession session, Long id, Integer type, String password) throws IOException {
 
+		if (file == null) {
+			throw new BusinessException("form表单参数不正确~");
+		}
+		
 		String realPath = session.getServletContext().getRealPath(Const.UploadKey.UPLOAD_PATH);
 		
 		

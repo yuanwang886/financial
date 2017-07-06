@@ -2,11 +2,11 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <section class="content-header">
 	<h1>
-		<span>得到帮助</span>
+		<span>得到捐助</span>
 	</h1>
 	<ol class="breadcrumb">
 		<li><a href="${ctx}/main"><i class="fa fa-dashboard"></i> 首页</a></li>
-		<li class="active">得到帮助</li>
+		<li class="active">得到捐助</li>
 	</ol>
 </section>
 <section class="content">
@@ -20,16 +20,16 @@
 						</div>
 						<div class="form-group">
 						    <label for="money">可以提现金额：</label><label class="text-danger">${wallet.cantraded}</label>
-							<label class="text-danger">（已买入超过10天可提现）</label>
+							<label class="text-danger">（已买入超过12天可提现）</label>
 						</div>
 						<div class="form-group">
-						   <label for="money">请输入提现金额</label><label class="text-danger">（最低300，且是100的整数倍）</label><input type="number"
+						   <label for="money">请输入提现金额</label><label class="text-danger">（300-50000，且是100的整数倍）</label><input type="number"
 								class="form-control" id="money" name="money" placeholder="请输入金额">
 						</div>
 					</div>
 					<div class="box-footer">
 						<button type="button" id="publishBtn"
-							class="btn btn-primary btn-block btn-flat">得到帮助</button>
+							class="btn btn-primary btn-block btn-flat">得到捐助</button>
 					</div>
 
 				</div>
@@ -128,7 +128,7 @@
 				});
 				return;
 			}
-			if (!isNumberBy100(money) || (parseFloat(money) < 300) || (parseFloat(money) > parseFloat(cantraded))) {
+			if (!isNumberBy100(money) || (parseFloat(money) < 300) || (parseFloat(money) > 50000) || (parseFloat(money) > parseFloat(cantraded))) {
 				$.alert({
 					title : '提示',
 					content : "您的金额不符合要求~",
@@ -171,8 +171,6 @@
 		});
 		
 		$("#myModal").on("hidden.bs.modal", function() {
-			//$(this).removeData("bs.modal");
-			//$(this).find(".modal-content").children().remove();
 
 			if ($("#sign").val() == '1') {
 				requestServer();

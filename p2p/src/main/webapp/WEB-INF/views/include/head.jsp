@@ -78,8 +78,9 @@
 <script src="${ctxStatic}/confirm/jquery-confirm.min.js"></script>
 <link rel="stylesheet" href="${ctxStatic}/confirm/jquery-confirm.min.css">
 
-<!-- 文件上传 -->
+<!-- 文件上传 
 <script src="${ctxStatic}/common/js/plupload.full.min.js"></script>
+-->
 
 <link rel="shortcut icon" href="${ctxStatic}/common/favicon.ico" />
 

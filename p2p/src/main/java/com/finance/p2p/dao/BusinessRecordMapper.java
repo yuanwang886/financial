@@ -65,4 +65,14 @@ public interface BusinessRecordMapper {
 	 */
 	List<Match> getMatchList(Map<String, Object> condition);
 
+	
+	List<BusinessRecord> getUserRecordList(@Param("userId") Long userId);
+	/**
+	 * 锁定一个用户需要删除该用户所有的记录
+	 * 
+	 * @param userId
+	 * @return
+	 */
+	int deleteUserRecordWhenLock(@Param("userId") Long userId);
+
 }

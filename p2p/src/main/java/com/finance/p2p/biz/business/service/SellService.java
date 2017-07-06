@@ -19,6 +19,7 @@ import com.finance.p2p.biz.sys.utils.Const.RateKey;
 import com.finance.p2p.biz.sys.utils.Const.RecordKey;
 import com.finance.p2p.biz.sys.utils.Const.StateKey;
 import com.finance.p2p.biz.sys.utils.Const.TrackKey;
+import com.finance.p2p.biz.sys.utils.Const.TypeKey;
 import com.finance.p2p.biz.sys.utils.Const.USERKey;
 import com.finance.p2p.biz.sys.utils.Pubfun;
 import com.finance.p2p.dao.AccountMapper;
@@ -97,17 +98,17 @@ public class SellService {
 	public BaseData sellSubmit(Long userId, Integer money, String password) {
 		User user = userMapper.selectByPrimaryKey(userId);
 		if (user.getState().equals(USERKey.LOCK)) {
-			throw new BusinessException("您当前已经被系统锁定,不能购买");
+			throw new BusinessException("您当前已经被系统锁定,不能获得帮助(S1050)");
 		}
 		password = Pubfun.encryptMD5(user.getPhone(), password);
 		if (!StringUtils.equals(password, user.getPayPassword())) {
-			throw new BusinessException("支付密码错误,不能卖出");
+			throw new BusinessException("支付密码错误,不能获得帮助(S1051)");
 		}
 
 		// 这里还需要判断是否存在为打款的帮助信息
 		Buy buy = buyMapper.queryUserLastBuy(userId);
 		if (buy != null && !buy.getState().equals(StateKey.STATE_5)) {
-			throw new BusinessException("您当前存在提供帮助的金额未完成.");
+			throw new BusinessException("您当前存在提供帮助的金额未完成，不能获得帮助(S1052)");
 		}
 
 		BaseData data = new BaseData();
@@ -119,6 +120,17 @@ public class SellService {
 		if (count > 0) {
 			data.setError("您当天已经提现一笔，不能继续提现(S1010)");
 		} else {
+
+			// 对用户钱包的数据进行判断
+			Wallet walletSell = walletMapper.selectByPrimaryKey(userId);
+			if (walletSell == null) {
+				throw new BusinessException("数据异常，请重试尝试(S1004)");
+			}
+			if (sellMoney.compareTo(walletSell.getCantraded()) > 0
+					|| walletSell.getCantraded().compareTo(walletSell.getWallet()) > 0) {
+				throw new BusinessException("数据异常，请重试尝试(S1008)");
+			}
+			
 			// 开始查询用户收入表数据，开始删除部分信息-1 小于 0 等于 1 大于
 			List<Long> ibIdList = new ArrayList<Long>();
 
@@ -126,9 +138,17 @@ public class SellService {
 			BigDecimal buyMoney = new BigDecimal(0);
 			BigDecimal zero = new BigDecimal(0);
 
+			BigDecimal integrity = new BigDecimal(0);//诚信奖金
+			BigDecimal interest = new BigDecimal(0);//利息
 			// 如果购买列表没有数据了，那么就是纯利息
 			if (CollectionUtils.isEmpty(buyList)) {
-
+				if (walletSell.getIntegrity().compareTo(sellMoney) >= 0) {
+					integrity = sellMoney;
+				}
+				else {
+					integrity = walletSell.getIntegrity();
+					interest = sellMoney.subtract(walletSell.getIntegrity());
+				}
 			} else {
 				for (IncomeBuy incomeBuy : buyList) {
 					buyMoney = buyMoney.add(incomeBuy.getMoney());
@@ -139,6 +159,20 @@ public class SellService {
 						break;
 					} else {
 						ibIdList.add(incomeBuy.getId());
+					}
+				}
+				
+				//判断是否完成
+				if (buyMoney.compareTo(sellMoney) >= 0) {
+				}
+				else {
+					buyMoney = sellMoney.subtract(buyMoney); //这些金额从利息与奖金中扣
+					if (walletSell.getIntegrity().compareTo(buyMoney) >= 0) {
+						integrity = buyMoney;
+					}
+					else {
+						integrity = walletSell.getIntegrity();
+						interest = buyMoney.subtract(walletSell.getIntegrity());
 					}
 				}
 			}
@@ -159,22 +193,13 @@ public class SellService {
 			sell.setModifyTime(date);
 			sellMapper.insert(sell);
 
-			// 对用户钱包的数据进行判断
-			Wallet walletSell = walletMapper.selectByPrimaryKey(userId);
-			if (walletSell == null) {
-				throw new BusinessException("数据异常，请重试尝试(S1004)");
-			}
-			if (sellMoney.compareTo(walletSell.getCantraded()) > 0
-					|| walletSell.getCantraded().compareTo(walletSell.getWallet()) > 0) {
-				throw new BusinessException("数据异常，请重试尝试(S1008)");
-			}
 			// 修改卖出用户的钱包记录
 			Wallet wallet = new Wallet();
 			wallet.setUserId(userId);
 			wallet.setBuyMoney(zero);
 			wallet.setSellMoney(sellMoney);// 更新卖出金额
-			wallet.setIntegrity(zero);
-			wallet.setInterest(zero);
+			wallet.setIntegrity(integrity.negate());
+			wallet.setInterest(interest.negate());
 			wallet.setCantraded(sellMoney.negate()); // 更新可以交易的金额
 			wallet.setFreeze(sellMoney); // 更新冻结金额
 			wallet.setWallet(sellMoney.negate());// 减少钱包金额
@@ -362,8 +387,10 @@ public class SellService {
 		sellTrack.setModifyTime(date);
 		incomeTrackMapper.insert(sellTrack);
 
-		// 开始计算上级 或者上上级的奖金
-		calcBonus(br.getMoney(), br.getBuyAccountId());
+		// 开始计算上级 或者上上级的奖金, 在他们的规则里，只有尾款才有奖金
+		if (br.getType().equals(TypeKey.TYPE_2)) {
+			calcBonus(br.getMoney(), br.getBuyAccountId());
+		}
 	}
 
 	private void calcBonus(BigDecimal money, Long userId) {

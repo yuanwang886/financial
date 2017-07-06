@@ -309,7 +309,7 @@
   -->
   <update id="updateUserStateBy48Hour">
    	update p2p_user set state = 1, lock_time = #{nowDate}, modify_time = #{nowDate}
-   	    where state = 0 and pay_time <![CDATA[ < ]]> #{nowDate}	
+   	    where state = 0 and pay_time <![CDATA[ < ]]> #{nowDate}	and lock_time is null
   </update>
   
   <select id="selectLockUserList" resultType="java.lang.Long" >
@@ -369,5 +369,43 @@
 		where  state = 0 and user_id <![CDATA[ > ]]> #{userId}
 		order by user_id asc
 		limit 50
+	</select>
+	
+	
+ <!-- 查找所有内置的人员 -->
+  <select id="getInternalUserList" resultType="com.finance.p2p.biz.sys.bean.InternalBean" parameterType="java.util.Map">
+		select a.user_id userId, realname name, phone, wallet, cantraded
+		from p2p_user a left join p2p_wallet b on a.user_id = b.user_id
+		<where>
+		    a.user_role = 1 and instr(a.relation, "_") <![CDATA[ = ]]> 0
+			<if test="phone != null and phone != ''">
+				and phone <![CDATA[ = ]]> #{phone}
+			</if>
+		</where>
+		order by a.user_id desc
+		<if test="limit != null">
+			limit #{limit}
+		</if>
+	</select>
+	
+	
+ <!-- 查找所有的人员 -->
+  <select id="getUserList" parameterType="java.util.Map" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from p2p_user
+		<where>
+		    user_role = 1
+			<if test="phone != null and phone != ''">
+				and phone <![CDATA[ = ]]> #{phone}
+			</if>
+			<if test="realname != null and realname != ''">
+				and realname <![CDATA[ = ]]> #{realname}
+			</if>
+		</where>
+		order by user_id desc
+		<if test="limit != null">
+			limit #{limit}
+		</if>
 	</select>
 </mapper>

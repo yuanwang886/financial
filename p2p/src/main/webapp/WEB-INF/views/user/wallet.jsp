@@ -28,10 +28,10 @@
 			<div id="u-notice-list">
 				<ul class="list-group">
 					<li class="list-group-item"><a>钱包明细</a></li>
-					<li class="list-group-item">买入金额：${wallet.buyMoney}</li>
-					<li class="list-group-item">卖出金额：${wallet.sellMoney}</li>
-					<li class="list-group-item">赚取利息：${wallet.interest}</li>
-					<li class="list-group-item">团队奖金：${wallet.integrity}</li>
+					<li class="list-group-item">历史买入金额：${wallet.buyMoney}</li>
+					<li class="list-group-item">历史卖出金额：${wallet.sellMoney}</li>
+					<li class="list-group-item">剩余赚取利息：${wallet.interest}</li>
+					<li class="list-group-item">剩余团队奖金：${wallet.integrity}</li>
 				</ul>
 			</div>
 		</div>

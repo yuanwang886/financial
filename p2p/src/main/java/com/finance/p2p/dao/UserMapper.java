@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.finance.p2p.biz.sys.bean.InternalBean;
 import com.finance.p2p.biz.user.bean.Team.Person;
 import com.finance.p2p.entity.User;
 
@@ -51,4 +52,10 @@ public interface UserMapper {
 
 	// 查询所有的用户信息
 	List<User> getAllUserList(@Param("userId") Long userId);
+
+	// 管理员查询内置人员
+	List<InternalBean> getInternalUserList(Map<String, Object> condition);
+	
+	// 根据条件查询所有用户列表
+	List<User> getUserList(Map<String, Object> condition);
 }

@@ -40,7 +40,7 @@ public class UploadService {
 					fileExtName = str[str.length - 1];
 				}
 				// 创建服务器上传文件名（当前毫秒数+文件后缀）
-				String fileName = UUIDGenerator.getUUID() + "." + fileExtName;
+				String fileName = UUIDGenerator.getUUID() + "." + fileExtName.toLowerCase();
 				FileUtils.copyInputStreamToFile(file.getInputStream(),
 						new File(userUploadDir.getAbsolutePath(), fileName));
 				filePath = Const.UploadKey.UPLOAD_PATH + "/" + userId + "/" + fileName;

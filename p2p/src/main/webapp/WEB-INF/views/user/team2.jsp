@@ -58,7 +58,7 @@ function loadTableData() {
 				$("#nextPage").hide();
 				if (id == null && list.length == 0) {
 					$panel = $('<div class="panel panel-info">');
-					$panel.append($('<div class="panel-body">暂无任何排单消息</div>'));
+					$panel.append($('<div class="panel-body">暂无任何排单记录</div>'));
 					$panel.append($('</div>'));
 					$("#u-notice-list").append($panel);
 					return;

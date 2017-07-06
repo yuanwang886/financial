@@ -29,7 +29,7 @@ public class MatchTask extends LogUtil {
 	/**
 	 * 对用户进行10%预付款处理
 	 */
-	@Scheduled(cron = "5/10 * 8-20 * * ?")
+	@Scheduled(cron = "5/10 * 5-23 * * ?")
 	public void userSubsistTask() {
 		if (jobSwitch.equals("0")) {
 			return;
@@ -41,7 +41,7 @@ public class MatchTask extends LogUtil {
 	/**
 	 * 对用户进行90%余款处理
 	 */
-	@Scheduled(cron = "0/10 * 8-20 * * ?")
+	@Scheduled(cron = "0/10 * 5-23 * * ?")
 	public void userSurplusTask() {
 		if (jobSwitch.equals("0")) {
 			return;

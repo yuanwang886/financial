@@ -122,8 +122,8 @@ public class TaskService {
 			buy.setModifyTime(date);
 			buyMapper.updateByPrimaryKeySelective(buy);
 
-			// 既然用户已经冻结，那么我们还是需要吧以前的金额返回到钱包中去,那么用户就不计算利息了
-			incomeBuyMapper.deleteUserAllList(br.getBuyAccountId());
+			// 既然用户已经冻结，暂时我们继续放在利息计算池中，方便统计
+			// incomeBuyMapper.deleteUserAllList(br.getBuyAccountId());
 		}
 
 		// 预付款24小时未支付的要锁定
@@ -159,8 +159,8 @@ public class TaskService {
 			buy.setModifyTime(date);
 			buyMapper.updateByPrimaryKeySelective(buy);
 
-			// 既然用户已经冻结，那么我们还是需要吧以前的金额返回到钱包中去,那么用户就不计算利息了
-			incomeBuyMapper.deleteUserAllList(br.getBuyAccountId());
+			// 既然用户已经冻结，暂时我们继续放在利息计算池中，方便统计
+			// incomeBuyMapper.deleteUserAllList(br.getBuyAccountId());
 		}
 	}
 
@@ -189,7 +189,7 @@ public class TaskService {
 
 		// 找出这部分用户其中1个
 		Date date = new Date();
-		Buy buy = buyMapper.selectSurplus(date);
+		Buy buy = buyMapper.selectSurplus(date, TimeKey.DAY_6);
 
 		if (buy == null) {
 			return;
@@ -215,14 +215,20 @@ public class TaskService {
 		// 查询出所有钱包金额大于0的用户，来计算用户前天的利息
 		List<Long> userList = walletMapper.selectWalletBig();
 		for (Long userId : userList) {
+			User user = userMapper.selectByPrimaryKey(userId);
+			if (user.getState().equals(USERKey.LOCK)) {
+				//如果当前利息的用户被锁定了，那么就不计算利息了
+				continue;
+			}
+			
 			// 用户利息
 			Integer interest = incomeBuyMapper.calcUserInterest(nowDate, userId);
-			// 用户在buy里面超过10天可以卖出的金额
-			Integer canTraded = incomeBuyMapper.calcUserTraded(nowDate, userId, TimeKey.DAY_10);
-
 			if (interest == null) {
 				continue;
 			}
+
+			// 用户在buy里面超过10天可以卖出的金额
+			Integer canTraded = incomeBuyMapper.calcUserTraded(nowDate, userId, TimeKey.DAY_12);
 
 			if (interest != null && interest.compareTo(0) > 0) {
 
@@ -255,7 +261,7 @@ public class TaskService {
 			if (interest != null && interest.compareTo(0) > 0) {
 				wallet.setInterest(new BigDecimal(interest));
 				wallet.setWallet(new BigDecimal(interest));
-				
+
 				origal = origal.add(new BigDecimal(interest));
 			}
 			if (canTraded != null && canTraded.compareTo(0) > 0) {
@@ -383,6 +389,8 @@ public class TaskService {
 			notice.setContent("您已经被系统锁定。原因：预付款超过12小时未提供帮助");
 		} else if (timeType.equals(TimeKey.HOUR_24)) {
 			notice.setContent("您已经被系统锁定。原因：余额款超过24小时未提供帮助");
+		} else if (timeType.equals(TimeKey.HOUR_0)) {
+			notice.setContent("您已经被系统管理员锁定。原因：请联系管理员");
 		}
 		notice.setCreateTime(date);
 		notice.setModifyTime(date);

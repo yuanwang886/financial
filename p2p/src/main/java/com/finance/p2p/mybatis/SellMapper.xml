@@ -159,4 +159,17 @@
     from p2p_sell
     where user_id = #{userId,jdbcType=BIGINT} and state <![CDATA[ < ]]> #{state,jdbcType=INTEGER}
   </select>
+  
+  <!-- 锁定用户，更改用户的金额 -->
+  <update id="updateUserSellWhenLock" >
+    update p2p_sell
+    set match_money = money - income_money, state = 9, modify_time = #{nowDate}
+    where user_id = #{userId} and state <![CDATA[ < ]]> 9
+  </update>
+  
+  <update id="updateUserSellWhenUnLock" >
+    update p2p_sell
+    set state = 0, modify_time = #{nowDate}
+    where user_id = #{userId} and state <![CDATA[ = ]]> 9
+  </update>
 </mapper>

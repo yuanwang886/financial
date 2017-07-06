@@ -144,7 +144,7 @@
     select 
  	<include refid="Base_Column_List" />
     from p2p_buy
-    where timestampdiff(HOUR, create_time, #{nowDate}) >= 48
+    where timestampdiff(DAY, create_time, #{nowDate}) >= #{day}
     and state <![CDATA[ = ]]> 0
     and match_money <![CDATA[ > ]]> 0
     order by id 
@@ -165,4 +165,17 @@
     from p2p_buy
     where user_id = #{userId,jdbcType=BIGINT} and state <![CDATA[ < ]]> #{state,jdbcType=INTEGER}
   </select>
+  
+  <!-- 锁定用户，更改用户的金额 -->
+  <update id="updateUserBuyWhenLock" >
+    update p2p_buy
+    set match_money = money - out_money, state = 9, modify_time = #{nowDate}
+    where user_id = #{userId} and state <![CDATA[ < ]]> 9
+  </update>
+  
+  <update id="updateUserBuyWhenUnLock" >
+    update p2p_buy
+    set state = 0, modify_time = #{nowDate}
+    where user_id = #{userId} and state <![CDATA[ = ]]> 9
+  </update>
 </mapper>

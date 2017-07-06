@@ -2,11 +2,11 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <section class="content-header">
 	<h1>
-		<span>提供帮助记录</span>
+		<span>提供捐助记录</span>
 	</h1>
 	<ol class="breadcrumb">
 		<li><a href="${ctx}/main"><i class="fa fa-dashboard"></i> 首页</a></li>
-		<li class="active">提供帮助记录</li>
+		<li class="active">提供捐助记录</li>
 	</ol>
 </section>
 <section class="content">

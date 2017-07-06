@@ -40,7 +40,7 @@ public interface BuyMapper {
 	 * @param state
 	 * @return
 	 */
-	Buy selectSurplus(@Param("nowDate") Date nowDate);
+	Buy selectSurplus(@Param("nowDate") Date nowDate, @Param("day") Integer day);
 
 	/**
 	 * 查询用户最后一笔买入信息系
@@ -49,7 +49,7 @@ public interface BuyMapper {
 	 * @return
 	 */
 	Buy queryUserLastBuy(Long userId);
-	
+
 	/**
 	 * 计算用户是否还存在计算利息的数据
 	 * 
@@ -57,4 +57,19 @@ public interface BuyMapper {
 	 * @return
 	 */
 	Integer countUserUnComplate(@Param("userId") Long userId, @Param("state") Integer state);
+
+	/**
+	 * 当锁定一个用户处理的购买数据
+	 * 
+	 * @return
+	 */
+	int updateUserBuyWhenLock(@Param("userId") Long userId, @Param("nowDate") Date nowDate);
+	
+	/**
+	 * 当解锁一个用户处理的购买数据
+	 * @param userId
+	 * @param nowDate
+	 * @return
+	 */
+	int updateUserBuyWhenUnLock(@Param("userId") Long userId, @Param("nowDate") Date nowDate);
 }

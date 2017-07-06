@@ -106,4 +106,28 @@ public class TeamController {
 		User user = (User) session.getAttribute(USERKey.USER_SESSION);
 		return teamService.release(user, userId, num);
 	}
+
+	/**
+	 * 激活码记录首页
+	 * 
+	 * @return
+	 */
+	@RequestMapping("/history/index")
+	public Object history() {
+		return "/user/history";
+	}
+
+	/**
+	 * 
+	 * @param id
+	 * @param type
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping("/history/list")
+	@ResponseBody
+	public Object list(Long id, HttpSession session) {
+		User user = (User) session.getAttribute(USERKey.USER_SESSION);
+		return teamService.history(user, id);
+	}
 }

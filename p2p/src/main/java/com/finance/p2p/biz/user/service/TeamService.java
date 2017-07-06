@@ -11,20 +11,25 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.finance.p2p.biz.common.bean.BaseData;
+import com.finance.p2p.biz.sys.utils.Const.ReleaseKey;
 import com.finance.p2p.biz.sys.utils.Const.TimeKey;
 import com.finance.p2p.biz.sys.utils.Const.USERKey;
+import com.finance.p2p.biz.user.bean.History;
 import com.finance.p2p.biz.user.bean.Match;
 import com.finance.p2p.biz.user.bean.Team;
 import com.finance.p2p.biz.user.bean.Team.Person;
 import com.finance.p2p.dao.BusinessRecordMapper;
+import com.finance.p2p.dao.ReleaseHistoryMapper;
 import com.finance.p2p.dao.ReleaseMapper;
 import com.finance.p2p.dao.UserMapper;
 import com.finance.p2p.entity.Release;
+import com.finance.p2p.entity.ReleaseHistory;
 import com.finance.p2p.entity.User;
 import com.framework.SysConst.SysKey;
 import com.framework.SysConst.YesOrNO;
 import com.framework.exception.BusinessException;
 import com.framework.utils.DateUtil;
+import com.framework.utils.IdWorker;
 
 @Service
 public class TeamService {
@@ -37,6 +42,9 @@ public class TeamService {
 
 	@Autowired
 	private ReleaseMapper releaseMapper;
+
+	@Autowired
+	private ReleaseHistoryMapper releaseHistoryMapper;
 
 	/**
 	 * 团队基本信息
@@ -163,6 +171,17 @@ public class TeamService {
 		}
 		userMapper.updateByPrimaryKeySelective(p);
 
+		// 增加激活码历史记录
+		ReleaseHistory releaseHistory = new ReleaseHistory();
+		releaseHistory.setId(IdWorker.getId());
+		releaseHistory.setUserId(parent.getUserId());
+		releaseHistory.setUserIdOp(userId);
+		releaseHistory.setType(ReleaseKey.TYPE_1);
+		releaseHistory.setNum(1);
+		releaseHistory.setCreateTime(nowDate);
+		releaseHistory.setModifyTime(nowDate);
+		releaseHistoryMapper.insert(releaseHistory);
+
 		return new BaseData();
 	}
 
@@ -217,6 +236,33 @@ public class TeamService {
 			releaseMapper.update(releaseChild);
 		}
 
+		// 增加激活码历史记录
+		ReleaseHistory releaseHistory = new ReleaseHistory();
+		releaseHistory.setId(IdWorker.getId());
+		releaseHistory.setUserId(parent.getUserId());
+		releaseHistory.setUserIdOp(userId);
+		releaseHistory.setType(ReleaseKey.TYPE_2);
+		releaseHistory.setNum(num);
+		releaseHistory.setCreateTime(nowDate);
+		releaseHistory.setModifyTime(nowDate);
+		releaseHistoryMapper.insert(releaseHistory);
+
 		return new BaseData();
+	}
+	
+	/**
+	 * 
+	 * @param parent
+	 * @param userId
+	 * @return
+	 */
+	@Transactional
+	public Object history(User user, Long id) {
+		Map<String, Object> condition = new HashMap<String, Object>();
+		condition.put("limit", SysKey.LIMIT);
+		condition.put("id", id);
+		condition.put("userId", user.getUserId());
+		List<History> list = releaseHistoryMapper.selectHistoryByUserId(condition);
+		return new BaseData(list);
 	}
 }

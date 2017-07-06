@@ -71,7 +71,7 @@
 		<div class="content-wrapper" id="mainDiv"></div>
 
 		<footer class="main-footer text-center">
-			<strong>Copyright &copy; 2017 <a href="#">金融平台</a></strong> All rights reserved.
+			<strong>Copyright &copy; 2017 <a href="#">${fns:getConfig('productName')}</a></strong> All rights reserved.
 		</footer>
 
 	</div>

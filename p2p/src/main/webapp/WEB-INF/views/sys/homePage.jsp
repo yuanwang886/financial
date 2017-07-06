@@ -65,7 +65,7 @@
 								<div class="info-box" data-target="#myModel" data-toggle="modal" data-url="/business/buy/risk">
 									<span class="info-box-icon bg-aqua"><i class="glyphicon glyphicon-log-in"></i></span>
 									<div class="info-box-content">
-										<span class="info-box-text text-blod"></span> <span class="info-box-text">提供帮助</span> <span class="info-box-text-sm"> </span>
+										<span class="info-box-text text-blod"></span> <span class="info-box-text">提供捐助</span> <span class="info-box-text-sm"> </span>
 									</div>
 								</div>
 							</div>
@@ -73,7 +73,7 @@
 								<div class="info-box" data-target="#myModel" data-toggle="modal" data-url="/business/sell/advice">
 									<span class="info-box-icon bg-aqua"><i class="glyphicon glyphicon-log-out"></i></span>
 									<div class="info-box-content">
-										<span class="info-box-text text-blod"></span> <span class="info-box-text">得到帮助</span> <span class="info-box-text-sm"> </span>
+										<span class="info-box-text text-blod"></span> <span class="info-box-text">得到捐助</span> <span class="info-box-text-sm"> </span>
 									</div>
 								</div>
 							</div>
@@ -81,7 +81,7 @@
 								<div class="info-box" data-url="/business/buy/list/index">
 									<span class="info-box-icon bg-aqua"><i class="fa fa-list"></i></span>
 									<div class="info-box-content">
-										<span class="info-box-text text-blod"></span> <span class="info-box-text">提供帮助记录</span> <span class="info-box-text-sm"> </span>
+										<span class="info-box-text text-blod"></span> <span class="info-box-text">提供捐助记录</span> <span class="info-box-text-sm"> </span>
 									</div>
 								</div>
 							</div>
@@ -89,7 +89,7 @@
 								<div class="info-box" data-url="/business/sell/list/index">
 									<span class="info-box-icon bg-aqua"><i class="glyphicon glyphicon-th-list"></i></span>
 									<div class="info-box-content">
-										<span class="info-box-text text-blod"> </span> <span class="info-box-text">得到帮助记录</span> <span class="info-box-text-sm"> </span>
+										<span class="info-box-text text-blod"> </span> <span class="info-box-text">得到捐助记录</span> <span class="info-box-text-sm"> </span>
 									</div>
 								</div>
 							</div>

@@ -10,7 +10,6 @@
 		<div class="login-logo">
 			<a href="#"><b>${fns:getConfig('productName')}</b></a>
 		</div>
-		<!-- /.login-logo -->
 		<div class="login-box-body">
 			<p class="login-box-msg">
 				<strong>找回密码</strong>

@@ -30,21 +30,25 @@ public class Pubfun {
 
 		if (type.equals(TypeKey.TYPE_1)) {
 			// 今天就可以锁定,按照这个只有等于
-			if (compare20 < TimeKey.HOUR_12 && compare20 > 0) {
+			if (compare20 <= TimeKey.HOUR_12 && compare20 > 0) {
 				calendar.add(Calendar.HOUR, TimeKey.HOUR_12 + compare20);
 			}
-
-			if (compare20 <= 0) {
+			else if (compare20 <= 0) {
 				calendar.add(Calendar.HOUR, TimeKey.HOUR_12 + compare08);
+			}
+			else {
+				calendar.add(Calendar.HOUR, TimeKey.HOUR_12);
 			}
 		} else if (type.equals(TypeKey.TYPE_2)) {
 			// 今天就可以锁定,按照这个只有等于
-			if (compare20 < TimeKey.HOUR_12 && compare20 > 0) {
+			if (compare20 <= TimeKey.HOUR_12 && compare20 > 0) {
 				calendar.add(Calendar.HOUR, TimeKey.HOUR_24 + compare20);
 			}
-
-			if (compare20 <= 0) {
-				calendar.add(Calendar.HOUR, TimeKey.HOUR_24 + compare08);
+			else if (compare20 <= 0) {
+				calendar.add(Calendar.HOUR,  TimeKey.HOUR_24 + compare08);
+			}
+			else {
+				calendar.add(Calendar.HOUR, TimeKey.HOUR_24);
 			}
 		}
 		return calendar.getTime();
@@ -89,9 +93,7 @@ public class Pubfun {
 
 	public static void main(String a[]) {
 
-		System.out
-				.println(DateUtil.formatDate(calLockTime(DateUtil.formatDate("2017-06-02 18:00:03"), TypeKey.TYPE_1)));
+		System.out.println(DateUtil.formatDate(calLockTime(DateUtil.formatDate("2017-06-26 14:00:45"), TypeKey.TYPE_2)));
 		
-		System.out.println(DateUtil.formatDate(DateUtil.dateAddDay(DateUtil.formatDate("2017-06-02 18:00:03"), 1)));
 	}
 }

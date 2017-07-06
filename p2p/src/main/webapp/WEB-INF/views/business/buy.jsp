@@ -2,11 +2,11 @@
 <%@ include file="/WEB-INF/views/include/taglib.jsp"%>
 <section class="content-header">
 	<h1>
-		<span>提供帮助</span>
+		<span>提供捐助</span>
 	</h1>
 	<ol class="breadcrumb">
 		<li><a href="${ctx}/main"><i class="fa fa-dashboard"></i> 首页</a></li>
-		<li class="active">提供帮助</li>
+		<li class="active">提供捐助</li>
 	</ol>
 </section>
 <section class="content">
@@ -17,13 +17,13 @@
 
 					<div class="box-body">
 						<div class="form-group">
-							<label for="money">请输入金额</label><label class="text-danger">（金额为1000-50000，且是1000的整数倍）</label>
+							<label for="money">请输入金额</label><label class="text-danger">（金额为1000-10000，且是1000的整数倍）</label>
 							<input type="number" class="form-control" id="money" name="money"
 								placeholder="请输入金额">
 						</div>
 					</div>
 					<div class="box-footer">
-						<button type="button" id="publishBtn" class="btn btn-primary btn-block btn-flat">提供帮助</button>
+						<button type="button" id="publishBtn" class="btn btn-primary btn-block btn-flat">提供捐助</button>
 					</div>
 				</div>
 			</div>
@@ -119,7 +119,7 @@
 				return;
 			}
 
-			if (!isNumberBy1000(money) || (parseFloat(money) > 50000)) {
+			if (!isNumberBy1000(money) || (parseFloat(money) > 10000)) {
 				$.alert({
 					title : '提示',
 					content : "您的金额不符合要求~",

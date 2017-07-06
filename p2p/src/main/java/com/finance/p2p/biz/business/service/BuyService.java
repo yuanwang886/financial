@@ -79,18 +79,18 @@ public class BuyService {
 			throw new BusinessException("您当前处于未激活状态，请联系推荐人激活账户");
 		}
 		if (user.getState().equals(USERKey.LOCK)) {
-			throw new BusinessException("您当前已经被系统锁定,不能购买");
+			throw new BusinessException("您当前已经被系统锁定,不能提供帮助(S1050)");
 		}
 		password = Pubfun.encryptMD5(user.getPhone(), password);
 		if (!StringUtils.equals(password, user.getPayPassword())) {
-			throw new BusinessException("支付密码错误,不能购买");
+			throw new BusinessException("支付密码错误,不能提供帮助(S1051)");
 		}
 		BaseData data = new BaseData();
 
 		// 首先需要校验用户的最后一笔交易是否完成，如果没有不能购买
 		Integer count = buyMapper.countBuyByCondtion(userId, StateKey.STATE_5);
 		if (count > 0) {
-			data.setError("您当前还有一笔交易未完成，不能继续购买(U1001)");
+			data.setError("您当前还有一笔交易未完成，不能继续提供帮助(U1001)");
 		} else {
 
 			BigDecimal bigMoney = new BigDecimal(money);

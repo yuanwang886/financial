@@ -3,21 +3,26 @@ package com.finance.p2p.entity;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
-public class ReleaseCode {
+public class ReleaseHistory {
     private Long id;
 
     private Long userId;
 
-    private String code;
+    private Long userIdOp;
 
-    private Integer state;
+    private Integer type;
+
+    private Integer num;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createTime;
 
     private Date modifyTime;
 
+    @JsonSerialize(using = ToStringSerializer.class)
     public Long getId() {
         return id;
     }
@@ -34,20 +39,28 @@ public class ReleaseCode {
         this.userId = userId;
     }
 
-    public String getCode() {
-        return code;
+    public Long getUserIdOp() {
+        return userIdOp;
     }
 
-    public void setCode(String code) {
-        this.code = code == null ? null : code.trim();
+    public void setUserIdOp(Long userIdOp) {
+        this.userIdOp = userIdOp;
     }
 
-    public Integer getState() {
-        return state;
+    public Integer getType() {
+        return type;
     }
 
-    public void setState(Integer state) {
-        this.state = state;
+    public void setType(Integer type) {
+        this.type = type;
+    }
+
+    public Integer getNum() {
+        return num;
+    }
+
+    public void setNum(Integer num) {
+        this.num = num;
     }
 
     public Date getCreateTime() {

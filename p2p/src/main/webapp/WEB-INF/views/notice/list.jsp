@@ -50,7 +50,7 @@
 							$("#nextPage").hide();
 							if (id == null && list.length == 0) {
 								$panel = $('<div class="panel panel-info">');
-								$panel.append($('<div class="panel-body"><p>暂无任何消息</p></div>'));
+								$panel.append($('<div class="panel-body">暂无任何消息</div>'));
 								$panel.append($('</div>'));
 								$("#u-notice-list").append($panel);
 								return;

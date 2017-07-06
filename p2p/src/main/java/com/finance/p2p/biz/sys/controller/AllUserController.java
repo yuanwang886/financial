@@ -8,25 +8,33 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.finance.p2p.biz.common.controller.BaseController;
-import com.finance.p2p.biz.sys.service.LockService;
+import com.finance.p2p.biz.sys.service.AllUserService;
+import com.finance.p2p.biz.sys.service.LoginService;
+import com.finance.p2p.biz.user.service.WalletService;
+import com.finance.p2p.entity.User;
 import com.github.pagehelper.Page;
 
 /**
- * 用户锁定相关处理
- * 
- * @author Administrator
+ * 所有平台用户操作信息
  *
  */
 @Controller
-@RequestMapping("/lock")
-public class LockController extends BaseController {
+@RequestMapping("alluser")
+public class AllUserController extends BaseController {
 
 	@Autowired
-	private LockService lockService;
+	private AllUserService allUserService;
+	
+	@Autowired
+	private WalletService walletService;
+	
+	@Autowired
+	private LoginService loginService;
 
 	/**
 	 * 首页
@@ -35,7 +43,7 @@ public class LockController extends BaseController {
 	 */
 	@RequestMapping("index")
 	public String index() {
-		return "/sys/lock";
+		return "/sys/user";
 	}
 
 	/**
@@ -54,7 +62,7 @@ public class LockController extends BaseController {
 		condition.put("phone", request.getParameter("phone"));
 		condition.put("realname", request.getParameter("realname"));
 
-		List<?> list = lockService.getLockUserList(condition);
+		List<?> list = allUserService.getUserList(condition);
 
 		Integer sEcho = Integer.valueOf(request.getParameter("sEcho"));// 记录操作的次数
 
@@ -67,14 +75,28 @@ public class LockController extends BaseController {
 	}
 
 	/**
-	 * 解锁一个用户
+	 * 锁定指定的用户
+	 * 
 	 * @param userId
 	 * @return
 	 */
-	@RequestMapping(value = "/unlock")
+	@RequestMapping(value = "/lock")
 	@ResponseBody
-	public Object unlock(Long userId) {
-		return lockService.unLockUserByUserId(userId);
+	public Object lock(Long userId) {
+		return allUserService.lockUserByUserId(userId);
 
+	}
+	
+	@RequestMapping("wallet")
+	public String wallet(Long userId, Model model) {
+		User user = loginService.selectByUserId(userId);
+		//查询用户钱包信息
+		model.addAttribute("wallet", walletService.queryUserWallet(user));
+		//查询最近一笔买入信息
+		model.addAttribute("buy", walletService.queryUserLastBuy(user));
+		//查询最近一笔卖出信息
+		model.addAttribute("sell", walletService.queryUserLastSell(user));
+		
+		return "/user/wallet";
 	}
 }

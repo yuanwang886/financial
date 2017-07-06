@@ -12,14 +12,17 @@ import com.finance.p2p.biz.common.service.CacheService;
 import com.finance.p2p.biz.sms.service.SMSService;
 import com.finance.p2p.biz.sys.utils.Const.SMSKey;
 import com.finance.p2p.biz.sys.utils.Const.TimeKey;
+import com.finance.p2p.biz.sys.utils.Const.TrackKey;
 import com.finance.p2p.biz.sys.utils.Const.USERKey;
 import com.finance.p2p.biz.sys.utils.Global;
 import com.finance.p2p.biz.sys.utils.Pubfun;
 import com.finance.p2p.dao.AccountMapper;
+import com.finance.p2p.dao.IncomeTrackMapper;
 import com.finance.p2p.dao.ReleaseMapper;
 import com.finance.p2p.dao.UserMapper;
 import com.finance.p2p.dao.UserTimeMapper;
 import com.finance.p2p.dao.WalletMapper;
+import com.finance.p2p.entity.IncomeTrack;
 import com.finance.p2p.entity.Release;
 import com.finance.p2p.entity.User;
 import com.finance.p2p.entity.UserTime;
@@ -52,6 +55,9 @@ public class LoginService {
 
 	@Autowired
 	private ReleaseMapper releaseMapper;
+
+	@Autowired
+	private IncomeTrackMapper incomeTrackMapper;
 
 	/**
 	 * 用户注册
@@ -86,6 +92,13 @@ public class LoginService {
 		// 校验短信合法性
 		sMSService.verify(phone, SMSKey.TEMP_1001, code);
 
+		BigDecimal zero = new BigDecimal(0);
+
+		return registerDeal(phone, password, realname, invitePhone, zero);
+	}
+
+	public User registerDeal(String phone, String password, String realname, String invitePhone, BigDecimal money)
+			throws Exception {
 		User user = userMapper.selectByPhone(phone);
 		if (user != null) {
 			throw new Exception("该手机号已经注册(A109)");
@@ -103,23 +116,30 @@ public class LoginService {
 		user.setMegSwitch(USERKey.OPEN);
 
 		// 如果邀请人不为空，那么我们开始设置层级关系
-		User parent = userMapper.selectByPhone(invitePhone);
-		if (parent == null) {
-			// 说明上级电话是错误的
-			throw new Exception("邀请人号码错误(A108)");
+		if (StringUtils.isEmpty(invitePhone)) {
+			// 如果为空，那么就是内置人员
+			user.setPayPassword(Pubfun.encryptMD5(phone, password));
+			user.setRelation(user.getUserId() + "");
+			user.setActivation(YesOrNO.YES);
 		} else {
-			if (parent.getState().equals(USERKey.LOCK)) {
-				throw new Exception("邀请人被锁定，您暂时不能注册(A107)");
-			}
-			user.setActivation(YesOrNO.NO);
-
-			// 由于值保存2级关系，所以这个地方要特殊处理下 186 186_188 186_188_189 188——189——150
-			String[] r = parent.getRelation().split(USERKey.RelationSplit);
-			if (r.length == 3) {
-				// 那么需要截取
-				user.setRelation(r[1] + USERKey.RelationSplit + r[2] + USERKey.RelationSplit + user.getUserId());
+			User parent = userMapper.selectByPhone(invitePhone);
+			if (parent == null) {
+				// 说明上级电话是错误的
+				throw new Exception("邀请人号码错误(A108)");
 			} else {
-				user.setRelation(parent.getRelation() + USERKey.RelationSplit + user.getUserId());
+				if (parent.getState().equals(USERKey.LOCK)) {
+					throw new Exception("邀请人被锁定，您暂时不能注册(A107)");
+				}
+				user.setActivation(YesOrNO.NO);
+
+				// 由于值保存2级关系，所以这个地方要特殊处理下 186 186_188 186_188_189 188——189——150
+				String[] r = parent.getRelation().split(USERKey.RelationSplit);
+				if (r.length == 3) {
+					// 那么需要截取
+					user.setRelation(r[1] + USERKey.RelationSplit + r[2] + USERKey.RelationSplit + user.getUserId());
+				} else {
+					user.setRelation(parent.getRelation() + USERKey.RelationSplit + user.getUserId());
+				}
 			}
 		}
 		user.setInvitePhone(invitePhone);
@@ -141,10 +161,10 @@ public class LoginService {
 		wallet.setBuyMoney(zero);
 		wallet.setSellMoney(zero);
 		wallet.setInterest(zero);
-		wallet.setIntegrity(zero);
-		wallet.setCantraded(zero);
+		wallet.setIntegrity(money); // 这些钱是直接加到奖金上面
+		wallet.setCantraded(money);
 		wallet.setFreeze(zero);
-		wallet.setWallet(zero);
+		wallet.setWallet(money);
 		wallet.setCreateTime(nowDate);
 		wallet.setModifyTime(nowDate);
 		walletMapper.insert(wallet);
@@ -165,6 +185,20 @@ public class LoginService {
 		release.setCreateTime(nowDate);
 		release.setModifyTime(nowDate);
 		releaseMapper.insertSelective(release);
+
+		// 差生额外记录
+		if (money.compareTo(zero) > 0) {
+			IncomeTrack incomeTrack = new IncomeTrack();
+			incomeTrack.setId(user.getUserId());
+			incomeTrack.setUserId(user.getUserId());
+			incomeTrack.setType(TrackKey.TYPE_6);
+			incomeTrack.setMoney(money);
+			incomeTrack.setRemark("您获得内置金额" + money + "元。 " + DateUtil.formatDate(nowDate));
+			incomeTrack.setIncomeTime(nowDate);
+			incomeTrack.setCreateTime(nowDate);
+			incomeTrack.setModifyTime(nowDate);
+			incomeTrackMapper.insert(incomeTrack);
+		}
 
 		return user;
 	}
@@ -214,6 +248,15 @@ public class LoginService {
 	 */
 	public User selectByPhone(String phone) {
 		return userMapper.selectByPhone(phone);
+	}
+	
+	/**
+	 * 根据主键查询
+	 * @param userId
+	 * @return
+	 */
+	public User selectByUserId(Long userId) {
+		return userMapper.selectByPrimaryKey(userId);
 	}
 
 	/**
