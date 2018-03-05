@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.finance.p2p.dao.IncomeBuyMapper" >
+  <resultMap id="BaseResultMap" type="com.finance.p2p.entity.IncomeBuy" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="buy_id" property="buyId" jdbcType="BIGINT" />
+    <result column="user_id" property="userId" jdbcType="BIGINT" />
+    <result column="money" property="money" jdbcType="DECIMAL" />
+    <result column="interest" property="interest" jdbcType="DECIMAL" />
+    <result column="start_time" property="startTime" jdbcType="TIMESTAMP" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="modify_time" property="modifyTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, buy_id, user_id, money, interest, start_time, create_time, modify_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from p2p_income_buy
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from p2p_income_buy
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.finance.p2p.entity.IncomeBuy" >
+    insert into p2p_income_buy (id, buy_id, user_id, 
+      money, interest, start_time, 
+      create_time, modify_time)
+    values (#{id,jdbcType=BIGINT}, #{buyId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, 
+      #{money,jdbcType=DECIMAL}, #{interest,jdbcType=DECIMAL}, #{startTime,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.finance.p2p.entity.IncomeBuy" >
+    insert into p2p_income_buy
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="buyId != null" >
+        buy_id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="interest != null" >
+        interest,
+      </if>
+      <if test="startTime != null" >
+        start_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="buyId != null" >
+        #{buyId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="interest != null" >
+        #{interest,jdbcType=DECIMAL},
+      </if>
+      <if test="startTime != null" >
+        #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.finance.p2p.entity.IncomeBuy" >
+    update p2p_income_buy
+    <set >
+      <if test="buyId != null" >
+        buy_id = #{buyId,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=DECIMAL},
+      </if>
+      <if test="interest != null" >
+        interest = #{interest,jdbcType=DECIMAL},
+      </if>
+      <if test="startTime != null" >
+        start_time = #{startTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.finance.p2p.entity.IncomeBuy" >
+    update p2p_income_buy
+    set buy_id = #{buyId,jdbcType=BIGINT},
+      user_id = #{userId,jdbcType=BIGINT},
+      money = #{money,jdbcType=DECIMAL},
+      interest = #{interest,jdbcType=DECIMAL},
+      start_time = #{startTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      modify_time = #{modifyTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  
+  <update id="calcUserIncome">
+		update p2p_income_buy
+		set interest = timestampdiff(DAY, start_time, #{nowDate}) * #{rate} * money,
+		start_time = #{nowDate},
+		modify_time = #{nowDate}
+		where start_time <![CDATA[ < ]]> #{nowDate} and timestampdiff(DAY, create_time, #{nowDate}) <![CDATA[ <= ]]> #{day}
+   </update>
+	
+  <select id="selectUserBuyList" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from p2p_income_buy
+    where user_id = #{userId,jdbcType=BIGINT}
+    order by id
+  </select>
+ 
+   <delete id="deleteUserBuyList">
+    delete from p2p_income_buy
+    where 1 = 1
+    <if test="ids != null" >
+      AND id  in
+      <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </if>
+  </delete>
+ 
+  <select id="calcUserInterest" resultType="java.lang.Integer">
+    select sum(interest)
+    from p2p_income_buy
+    where user_id = #{userId,jdbcType=BIGINT} and start_time = #{nowDate}
+  </select>
+  
+  <select id="calcUserTraded" resultType="java.lang.Integer">
+    select sum(money)
+    from p2p_income_buy
+    where user_id = #{userId,jdbcType=BIGINT} and timestampdiff(DAY, create_time, #{nowDate}) <![CDATA[ >= ]]> #{day}	
+  </select> 
+
+  <select id="countUserUnComplate" resultType="java.lang.Integer" >
+    select count(1)
+    from p2p_income_buy
+    where user_id = #{userId,jdbcType=BIGINT}
+  </select>
+  
+  <select id="selectByBuyId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from p2p_income_buy
+    where buy_id = #{buyId,jdbcType=BIGINT}
+  </select>
+  
+  <update id="updateMoneyById" parameterType="com.finance.p2p.entity.IncomeBuy">
+	update p2p_income_buy
+	set money = #{money,jdbcType=DECIMAL} + money,
+	modify_time = #{modifyTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+   </update>
+</mapper>
